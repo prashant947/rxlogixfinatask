@@ -1,0 +1,62 @@
+
+<div class="container">
+  <div class="row mt-2 mb-2">
+    <div class="col-md-10">
+      <button class="btn btn-primary" (click)="onAddRow()">Add row</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let contact of contactList; let index = index">
+          <th scope="row">{{ index + 1}}</th>
+          <td>{{ contact.name }}</td>
+          <td>{{ contact.email }}</td>
+          <td>
+            <button class="btn btn-primary mr-1" (click)="onShowDetails(contact)">Show details</button>
+            <button [disabled]="index == 0" class="btn btn-primary btn-danger" (click)="onDelete(index)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+
+<ng-template #contactDetails>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Contact Details</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="contactDetailsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #contactDetailForm = ngForm (ngSubmit)="onSubmitContactDetailsForm(contactDetailForm)">
+      <div class="form-group">
+        <label for="contactName">Name</label>
+        <input type="text" class="form-control" id="contactName" name="name" aria-describedby="contactName" placeholder="Enter name" [ngModel]="selectedContact.name" #name="ngModel" required>
+        <small *ngIf="name.invalid && name.touched" class="form-text text-danger">Name field cannot be empty.</small>
+      </div>
+      <div class="form-group">
+        <label for="contactEmail">Email</label>
+        <input type="email" class="form-control" id="contactEmail" name="email" aria-describedby="emailHelp" placeholder="Enter email" #email="ngModel" [ngModel]="selectedContact.email" required email>
+        <small *ngIf="email.invalid && email.touched"  class="form-text text-danger">{{email.control.value ? "Please enter valid email" : "Email field cannot be empty."}}</small>
+      </div>
+      <button [disabled]="contactDetailForm.invalid || !contactDetailForm.dirty" type="submit" class="btn btn-primary mr-2">Submit</button>
+      <button class="btn btn-default" type="button" (click)="contactDetailsModalRef.hide()">Cancel</button>
+    </form>
+  </div>
+</ng-template>
+

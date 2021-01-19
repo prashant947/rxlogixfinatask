@@ -1,0 +1,7 @@
+input.ng-invalid {
+  border: 1px solid crimson;
+}
+
+button:disabled {
+  cursor: no-drop;
+}
